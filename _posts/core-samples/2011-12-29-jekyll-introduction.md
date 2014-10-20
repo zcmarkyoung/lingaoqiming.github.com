@@ -9,404 +9,75 @@ tags : [intro, beginner, jekyll, tutorial]
 This Jekyll introduction will outline specifically  what Jekyll is and why you would want to use it.
 Directly following the intro we'll learn exactly _how_ Jekyll does what it does.
 
-## Overview
-
-### What is Jekyll?
-
-Jekyll is a parsing engine bundled as a ruby gem used to build static websites from
-dynamic components such as templates, partials, liquid code, markdown, etc. Jekyll is known as "a simple, blog aware, static site generator".
-
-### Examples
-
-This website is created with Jekyll. [Other Jekyll websites](https://github.com/mojombo/jekyll/wiki/Sites).
-
-
-
-### What does Jekyll Do?
-
-Jekyll is a ruby gem you install on your local system.
-Once there you can call `jekyll --server` on a directory and provided that directory
-is setup in a way jekyll expects, it will do magic stuff like parse markdown/textile files,
-compute categories, tags, permalinks, and construct your pages from layout templates and partials.
-
-Once parsed, Jekyll stores the result in a self-contained static `_site` folder.
-The intention here is that you can serve all contents in this folder statically from a plain static web-server.
-
-You can think of Jekyll as a normalish dynamic blog but rather than parsing content, templates, and tags
-on each request, Jekyll does this once _beforehand_ and caches the _entire website_ in a folder for serving statically.
-
-### Jekyll is Not Blogging Software
-
-**Jekyll is a parsing engine.**
-
-Jekyll does not come with any content nor does it have any templates or design elements.
-This is a common source of confusion when getting started.
-Jekyll does not come with anything you actually use or see on your website - you have to make it.
-
-### Why Should I Care?
-
-Jekyll is very minimalistic and very efficient.
-The most important thing to realize about Jekyll is that it creates a static representation of your website requiring only a static web-server.
-Traditional dynamic blogs like Wordpress require a database and server-side code.
-Heavily trafficked dynamic blogs must employ a caching layer that ultimately performs the same job Jekyll sets out to do; serve static content.
-
-Therefore if you like to keep things simple and you prefer the command-line over an admin panel UI then give Jekyll a try.
-
-**Developers like Jekyll because we can write content like we write code:**
-
-- Ability to write content in markdown or textile in your favorite text-editor.
-- Ability to write and preview your content via localhost.
-- No internet connection required.
-- Ability to publish via git.
-- Ability to host your blog on a static web-server.
-- Ability to host freely on GitHub Pages.
-- No database required.
-
-# How Jekyll Works
-
-The following is a complete but concise outline of exactly how Jekyll works.
-
-Be aware that core concepts are introduced in rapid succession without code examples.
-This information is not intended to specifically teach you how to do anything, rather it
-is intended to give you the _full picture_ relative to what is going on in Jekyll-world.
-
-Learning these core concepts should help you avoid common frustrations and ultimately
-help you better understand the code examples contained throughout Jekyll-Bootstrap.
-
-
-## Initial Setup
-
-After [installing jekyll](/index.html#start-now) you'll need to format your website directory in a way jekyll expects.
-Jekyll-bootstrap conveniently provides the base directory format.
-
-### The Jekyll Application Base Format
-
-Jekyll expects your website directory to be laid out like so:
-
-    .
-    |-- _config.yml
-    |-- _includes
-    |-- _layouts
-    |   |-- default.html
-    |   |-- post.html
-    |-- _posts
-    |   |-- 2011-10-25-open-source-is-good.markdown
-    |   |-- 2011-04-26-hello-world.markdown
-    |-- _site
-    |-- index.html
-    |-- assets
-        |-- css
-            |-- style.css
-        |-- javascripts
-
-
-- **\_config.yml**
-	Stores configuration data.
-
-- **\_includes**
-	This folder is for partial views.
-
-- **\_layouts**
-	This folder is for the main templates your content will be inserted into.
-	You can have different layouts for different pages or page sections.
-
-- **\_posts**
-	This folder contains your dynamic content/posts.
-	the naming format is required to be `@YEAR-MONTH-DATE-title.MARKUP@`.
-
-- **\_site**
-	This is where the generated site will be placed once Jekyll is done transforming it.
-
-- **assets**
-	This folder is not part of the standard jekyll structure.
-	The assets folder represents _any generic_ folder you happen to create in your root directory.
-	Directories and files not properly formatted for jekyll will be left untouched for you to serve normally.
-
-(read more: <https://github.com/mojombo/jekyll/wiki/Usage>)
-
-
-### Jekyll Configuration
-
-Jekyll supports various configuration options that are fully outlined here:
-(<https://github.com/mojombo/jekyll/wiki/Configuration>)
-
-
-
-
-## Content in Jekyll
-
-Content in Jekyll is either a post or a page.
-These content "objects" get inserted into one or more templates to build the final output for its respective static-page.
-
-### Posts and Pages
-
-Both posts and pages should be written in markdown, textile, or HTML and may also contain Liquid templating syntax.
-Both posts and pages can have meta-data assigned on a per-page basis such as title, url path, as well as arbitrary custom meta-data.
-
-### Working With Posts
-
-**Creating a Post**
-Posts are created by properly formatting a file and placing it the `_posts` folder.
-
-**Formatting**
-A post must have a valid filename in the form `YEAR-MONTH-DATE-title.MARKUP` and be placed in the `_posts` directory.
-If the data format is invalid Jekyll will not recognize the file as a post. The date and title are automatically parsed from the filename of the post file.
-Additionally, each file must have [YAML Front-Matter](https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter) prepended to its content.
-YAML Front-Matter is a valid YAML syntax specifying meta-data for the given file.
-
-**Order**
-Ordering is an important part of Jekyll but it is hard to specify a custom ordering strategy.
-Only reverse chronological and chronological ordering is supported in Jekyll.
-
-Since the date is hard-coded into the filename format, to change the order, you must change the dates in the filenames.
-
-**Tags**
-Posts can have tags associated with them as part of their meta-data.
-Tags may be placed on posts by providing them in the post's YAML front matter.
-You have access to the post-specific tags in the templates. These tags also get added to the sitewide collection.
-
-**Categories**
-Posts may be categorized by providing one or more categories in the YAML front matter.
-Categories offer more significance over tags in that they can be reflected in the URL path to the given post.
-Note categories in Jekyll work in a specific way.
-If you define more than one category you are defining a category hierarchy "set".
-Example:
-
-    ---
-    title :  Hello World
-    categories : [lessons, beginner]
-    ---
-
-This defines the category hierarchy "lessons/beginner". Note this is _one category_ node in Jekyll.
-You won't find "lessons" and "beginner" as two separate categories unless you define them elsewhere as singular categories.
-
-### Working With Pages
-
-**Creating a Page**
-Pages are created by properly formatting a file and placing it anywhere in the root directory or subdirectories that do _not_ start with an underscore.
-
-**Formatting**
-In order to register as a Jekyll page the file must contain [YAML Front-Matter](https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter).
-Registering a page means 1) that Jekyll will process the page and 2) that the page object will be available in the `site.pages` array for inclusion into your templates.
-
-**Categories and Tags**
-Pages do not compute categories nor tags so defining them will have no effect.
-
-**Sub-Directories**
-If pages are defined in sub-directories, the path to the page will be reflected in the url.
-Example:
-
-    .
-    |-- people
-        |-- bob
-            |-- essay.html
-
-This page will be available at `http://yourdomain.com/people/bob/essay.html`
-
-
-**Recommended Pages**
-
-- **index.html**
-  You will always want to define the root index.html page as this will display on your root URL.
-- **404.html**
-  Create a root 404.html page and GitHub Pages will serve it as your 404 response.
-- **sitemap.html**
-  Generating a sitemap is good practice for SEO.
-- **about.html**
-  A nice about page is easy to do and gives the human perspective to your website.
-
-
-## Templates in Jekyll
-
-Templates are used to contain a page's or post's content.
-All templates have access to a global site object variable: `site` as well as a page object variable: `page`.
-The site variable holds all accessible content and metadata relative to the site.
-The page variable holds accessible data for the given page or post being rendered at that point.
-
-**Create a Template**
-Templates are created by properly formatting a file and placing it in the `_layouts` directory.
-
-**Formatting**
-Templates should be coded in HTML and contain YAML Front Matter.
-All templates can contain Liquid code to work with your site's data.
-
-**Rending Page/Post Content in a Template**
-There is a special variable in all templates named : `content`.
-The `content` variable holds the page/post content including any sub-template content previously defined.
-Render the content variable wherever you want your main content to be injected into your template:
-
-{% capture text %}...
-<body>
-  <div id="sidebar"> ... </div>
-  <div id="main">
-    |.{content}.|
-  </div>
-</body>
-...{% endcapture %}
-{% include JB/liquid_raw %}
-
-### Sub-Templates
-
-Sub-templates are exactly templates with the only difference being they
-define another "root" layout/template within their YAML Front Matter.
-This essentially means a template will render inside of another template.
-
-### Includes
-In Jekyll you can define include files by placing them in the `_includes` folder.
-Includes are NOT templates, rather they are just code snippets that get included into templates.
-In this way, you can treat the code inside includes as if it was native to the parent template.
-
-Any valid template code may be used in includes.
-
-
-## Using Liquid for Templating
-
-Templating is perhaps the most confusing and frustrating part of Jekyll.
-This is mainly due to the fact that Jekyll templates must use the Liquid Templating Language.
-
-### What is Liquid?
-
-[Liquid](https://github.com/Shopify/liquid) is a secure templating language developed by [Shopify](http://shopify.com).
-Liquid is designed for end-users to be able to execute logic within template files
-without imposing any security risk on the hosting server.
-
-Jekyll uses Liquid to generate the post content within the final page layout structure and as the primary interface for working with
-your site and post/page data.
-
-### Why Do We Have to Use Liquid?
-
-GitHub uses Jekyll to power [GitHub Pages](http://pages.github.com/).
-GitHub cannot afford to run arbitrary code on their servers so they lock developers down via Liquid.
-
-### Liquid is Not Programmer-Friendly.
-
-The short story is liquid is not real code and its not intended to execute real code.
-The point being you can't do jackshit in liquid that hasn't been allowed explicitly by the implementation.
-What's more you can only access data-structures that have been explicitly passed to the template.
-
-In Jekyll's case it is not possible to alter what is passed to Liquid without hacking the gem or running custom plugins.
-Both of which cannot be supported by GitHub Pages.
-
-As a programmer - this is very frustrating.
-
-But rather than look a gift horse in the mouth we are going to
-suck it up and view it as an opportunity to work around limitations and adopt client-side solutions when possible.
-
-**Aside**
-My personal stance is to not invest time trying to hack liquid. It's really unnecessary
-_from a programmer's_ perspective. That is to say if you have the ability to run custom plugins (i.e. run arbitrary ruby code)
-you are better off sticking with ruby. Toward that end I've built [Mustache-with-Jekyll](http://github.com/plusjade/mustache-with-jekyll)
-
-
-## Static Assets
-
-Static assets are any file in the root or non-underscored subfolders that are not pages.
-That is they have no valid YAML Front Matter and are thus not treated as Jekyll Pages.
-
-Static assets should be used for images, css, and javascript files.
-
-
-
-
-## How Jekyll Parses Files
-
-Remember Jekyll is a processing engine. There are two main types of parsing in Jekyll.
-
-- **Content parsing.**
-	This is done with textile or markdown.
-- **Template parsing.**
-  This is done with the liquid templating language.
-
-And thus there are two main types of file formats needed for this parsing.
-
-- **Post and Page files.**
-  All content in Jekyll is either a post or a page so valid posts and pages are parsed with markdown or textile.
-- **Template files.**
-	These files go in `_layouts` folder and contain your blogs **templates**. They should be made in HTML with the help of Liquid syntax.
-	Since include files are simply injected into templates they are essentially parsed as if they were native to the template.
-
-**Arbitrary files and folders.**
-Files that _are not_ valid pages are treated as static content and pass through
-Jekyll untouched and reside on your blog in the exact structure and format they originally existed in.
-
-### Formatting Files for Parsing.
-
-We've outlined the need for valid formatting using **YAML Front Matter**.
-Templates, posts, and pages all need to provide valid YAML Front Matter even if the Matter is empty.
-This is the only way Jekyll knows you want the file processed.
-
-YAML Front Matter must be prepended to the top of template/post/page files:
-
-    ---
-    layout: post
-    category : pages
-    tags : [how-to, jekyll]
-    ---
-
-    ... contents ...
-
-Three hyphens on a new line start the Front-Matter block and three hyphens on a new line end the block.
-The data inside the block must be valid YAML.
-
-Configuration parameters for YAML Front-Matter is outlined here:
-[A comprehensive explanation of YAML Front Matter](https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter)
-
-#### Defining Layouts for Posts and Templates Parsing.
-
-The `layout` parameter in the YAML Front Matter defines the template file for which the given post or template should be injected into.
-If a template file specifies its own layout, it is effectively being used as a `sub-template.`
-That is to say loading a post file into a template file that refers to another template file with work in the way you'd expect; as a nested sub-template.
-
-
-
-
-
-## How Jekyll Generates the Final Static Files.
-
-Ultimately, Jekyll's job is to generate a static representation of your website.
-The following is an outline of how that's done:
-
-1. **Jekyll collects data.**
-  Jekyll scans the posts directory and collects all posts files as post objects. It then scans the layout assets and collects those and finally scans other directories in search of pages.
-
-2. **Jekyll computes data.**
-  Jekyll takes these objects, computes metadata (permalinks, tags, categories, titles, dates) from them and constructs one
-  big `site` object that holds all the posts, pages, layouts, and respective metadata.
-  At this stage your site is one big computed ruby object.
-
-3. **Jekyll liquifies posts and templates.**
-  Next jekyll loops through each post file and converts (through markdown or textile) and **liquifies** the post inside of its respective layout(s).
-  Once the post is parsed and liquified inside the the proper layout structure, the layout itself is "liquified".
-	**Liquification** is defined as follows: Jekyll initiates a Liquid template, and passes a simpler hash representation of the ruby site object as well as a simpler
-  hash representation of the ruby post object. These simplified data structures are what you have access to in the templates.
-
-3. **Jekyll generates output.**
-	Finally the liquid templates are "rendered", thereby processing any liquid syntax provided in the templates
-	and saving the final, static representation of the file.
-
-**Notes.**
-Because Jekyll computes the entire site in one fell swoop, each template is given access to
-a global `site` hash that contains useful data. It is this data that you'll iterate through and format
-using the Liquid tags and filters in order to render it onto a given page.
-
-Remember, in Jekyll you are an end-user. Your API has only two components:
-
-1. The manner in which you setup your directory.
-2. The liquid syntax and variables passed into the liquid templates.
-
-All the data objects available to you in the templates via Liquid are outlined in the **API Section** of Jekyll-Bootstrap.
-You can also read the original documentation here: <https://github.com/mojombo/jekyll/wiki/Template-Data>
-
-## Conclusion
-
-I hope this paints a clearer picture of what Jekyll is doing and why it works the way it does.
-As noted, our main programming constraint is the fact that our API is limited to what is accessible via Liquid and Liquid only.
-
-Jekyll-bootstrap is intended to provide helper methods and strategies aimed at making it more intuitive and easier to work with Jekyll =)
-
-**Thank you** for reading this far.
-
-## Next Steps
-
-Please take a look at [{{ site.categories.api.first.title }}]({{ BASE_PATH }}{{ site.categories.api.first.url }})
-or jump right into [Usage]({{ BASE_PATH }}{{ site.categories.usage.first.url }}) if you'd like.
+## 第六卷 战争 第二百六十一节 孙尚香的实习
+
+
+　　“论及古文功底，我的确不够资格质疑你的古汉语水平，但是显然你也不懂法律。”姬信淡淡的说，“说实话，在查书之前，我真没想到代表反动地主阶级利益的《大明律》居然并非完全一边倒地袒护良民、歧视奴婢。相对于良民来说，奴婢是‘低一等的人’，而不是‘物品’，更不是一条狗，一匹马。
+　　
+　　对主人来说，奴婢也不完全是‘物品’。主人无故杀死奴婢，要杖六十徒一年，虽然仅仅是一年徒刑，毕竟也是刑事责任。一个人显然不会因为砸坏自己家电视机而被判刑。客观地说，大明的奴婢比你想象的还是有享有那么一点点人权的。”
+　　
+　　“你确定真得看过《大明律》？”程咏昕已经恢复了镇定，故作淡然的说道。
+　　
+　　姬信微微一笑，不接她的话：“至于三亚那几位元老大开杀戒，他们的作为是政垩府行为，并非个人的谋杀。如果这也要吊电杆的话，法院、警垩察局、军队之类的强力机关的人都要吊电杆了当然，或许在港台地区的确有很多人是这么想得。
+　　
+　　“我们回到杨继红案上来。按仲裁庭的现代概念的法律判，非故意杀人一般不判死刑，按大明律判就是偿命无论女婢殴杀奴婢，还是良民殴杀他人奴婢，都是绞刑。所以我觉得还是不要参照大明律了。”
+　　
+　　说完他站了起来，掸了掸衣服：“你要是没什么事情的话，我就先告辞了。谢谢你的红茶。”
+　　
+　　“啪”，随着姬信脚步的远去，精致的小庭院里传来了一声茶杯的碎裂声。
+　　
+　　今天是孙尚香去《临高时报》社实习的第一天，她起了一个大早，先把家中的一应家务料理妥当。
+　　
+　　这些日子因为程咏昕大多数时间都在外面，只有晚上回来睡觉。因而用不着做饭，清洁和洗涤工作量也随之减少。只交代她每天做完家务之后就多出去走动，和其他各家的女仆多去套套近乎，“交朋友”。孙尚香乐得轻松的优哉游哉的在元老宿舍区、农庄茶社几个女仆们常去的地方闲逛，结识了不少女仆。
+　　
+　　“就要和这样悠闲的日子说再见了。”孙尚香学着程元老的句式，冲着镜子里的自己自说道。
+　　
+　　等身大镜子里的孙尚香穿着改良版汉服，这是她的主人自己设计的，孙尚香的手很巧，在女仆学校系统的学习了现代的裁剪缝纫技术，可以很具象的根据效果图就将服装制作出来。
+　　
+　　她身上的这套改良汉服是按照齐胸儒裙加半臂的基本款式改良的。所谓改良就是按照现代服装的观念进行的一些改动，包括袖口缩小，裙子缩短，服装裁剪更为修身合体。至于穿在身上的效果，像生活秘书这样的青春少女穿着是绝对不会难看，更何况制作这些衣服的绸缎面料都是从战利品仓库里挑选出来的或者杭州站送来得特供办公厅使用的中高档产品。
+　　
+　　孙尚香很喜欢这身衣服，特别是用得料子她虽然勉强也算得上是官宦家的女儿，但是胶东素来穷困，她爹又是个芝麻绿豆的小世职，家中的女眷日常穿用基本都是本地农家自织的粗布，连件松江细布的衣服都少见，更遑论各种绸缎了。娘一直念念不忘的正室穿得“红裙”，也不过染得很粗的廉价山东茧绸做得逢年过节的时候拿出来穿一下就得赶忙收起来。
+　　
+　　只是她依然不太习惯自己的穿着及膝袜的裸露在裙摆外的小腿，不管元老们怎么说，她都觉得太“”了。当然这话她可不敢说出口，囡为她的小姐程元老的一些裙子比她短得多了。至于自己一双缠过得“解放脚”，露在裙外也分外难看：本来闺阁女子就该行不露足，现在不但要露出来，还穿不了三寸弓鞋，一双搭扣黑布鞋反而将她缠足之后又放开的变形的脚暴露无遗。
+　　
+　　“什么元老，就是群蛮子。”看着自己的难看的双脚和露在“不知羞耻”的短裙垩下的小腿，孙尚香不觉脱口而出。
+　　
+　　立刻，她就被自己吓住了。自己这是作死么！怎么把这念头脱口而出了？
+　　
+　　尽管知道屋子里就她一个人，她还是做贼心虚的看了四周一眼，屋子里静悄悄的，阳光从敞开的窗户外照射进来，屋子里亮堂堂的，窗帘在清风中微微掀动一片静谧。
+　　
+　　孙尚香摸了摸自己的胸口，心虚的吐出一口气。
+　　
+　　她摸了摸自己的发髻和头饰：双丫鬟上用丝带带着两个蝴蝶结。刘海也梳理的整整齐齐。她从斜背着的厚实的棉布挎包里取出个精巧的皮夹程首长最近给她的。她检查了下皮夹里的东西：茶社的消费附属卡、德隆元老信用卡附属卡、几百元流通券现金，她的身垩份证、特别通行证......还有一张程咏昕的名片。这种名片可不是旧时空随意散发满天飞的名片，而是近乎大明缙绅使用的名帖一样的东西。
+　　
+　　检查完这一切，孙尚香出门了：她今天要按照首长的吩咐，给自己买些东西。为自己去向那个黄头发的番婆子当“学徒”做准备。
+　　
+　　说起来，要不是首长的命令，她才不要向这个番婆子学什么呢。她身上有一股连首长都嫌的浓烈又古怪的香味，说起话来也声音大得出奇，脸上总是带着夸张的表情，不时还要挥舞胳膊。真是要多古怪有多古怪。
+　　
+　　她平日里冷眼旁观，知道主人虽然很看重这番婆子，频繁和她一起吃饭喝茶聊天，有时候还留她一起过夜。对她说话很客气，甚至有时候堪称亲昵，但是并不真心喜欢她。
+　　
+　　要说学徒，她倒是宁可给昨天来拜访那位姬首长去当学徒。虽然他穿着简陋，但是长相儒雅，气质方正，开口说话更是有条有理，很有读书人的官相。孙尚香还是第一次看到有人能把自己的素来伶牙俐齿的主人说得无言以对，甚至气得摔碎一只上好的细瓷茶杯的虽然她并不懂他们之间谈论的内容。
+　　
+　　元老宿舍区的活动从天一亮就开始了，此时女仆们大多已经出门采购，楼下空场上只有几个女仆抱着孩子在遛弯。这些元二代们最大的已经在蹒跚学步，小的只能流着口水看着这个新世界。
+　　
+　　有的女仆依然不脱当年的习气，身上穿着棉布围裙，把孩子放在藤摇车里，自己坐在一边拣菜剥豆。
+　　
+　　孙尚香很鄙夷这种行为，她在家的时候虽然家境不算宽裕，家中女子有时候不得不抛头露面，但是这么带着孩子在街头闲逛，甚至做家务的事是绝对不可能的。
+　　
+　　程小姐说得对：大多数首长和女仆们都是下等人出身，不懂富贵人家的礼仪享用。他们明明富可敌国，却一栋府邸也不起，住在鸟笼一样的楼房里，每家的地方就是比她家这个世袭小武官的家还要小得多。
+　　
+　　孙尚香今天要去的地方是合作社四十三号店。这是办公厅设立的一系列面对元老的特供商店中的一家：设在东门市的元老院合作总社四十三号店专门供应日用品;设在南海实验农场的生鲜特供商店供应粮食、蔬菜、水果、禽蛋、肉类和水产品;设在农庄茶社的办公厅特供食品商店供应各种加工副食品;海产品则由海产加工厂门市按照订货供应。
+　　
+　　这些特供商店内使用德隆银行专门为元老发行的信用卡进行消费。为了方便主持家计的女仆购物，还专门发行了元老授权签名的限额附属
+　　
+　　孙尚香出了宿舍区，搭上了公共马车到了东门市。早晨的街道已经熙熙攘攘了：去往各处上工的工人们潮水一般的从各条街道上涌入涌
+　　
+　　东门市的各家店铺都已经开门营业，比店铺更早营业的是挂着营业执照的早点摊贩们，各种食物的香气混合开锅的蒸汽，弥漫在空气中。
+　　
+　　即使在东门市这样归化民为主体的街道上，孙尚香的服饰也是非常醒目的。许多目光立刻投射到她的身上。混杂着各种羡慕嫉妒恨。不论是归化民还是土著都知道，能够穿戴这些衣饰的，除了芳草地里前途无量的女学生们，就只有在元老身边服务的女仆们了。
+　　
+　　孙尚香暗暗得意，故意放慢了脚步，充分享受这种被受瞩目的感觉虽然她心里知道这样“奇装异服，抛头露面”的吸引目光未免有“招蜂引蝶”之嫌，不是贞静淑女的行为，还是觉得心里很受用。
+　　
+　　她离开主干道，进了一条支路。这里的人少得多。走到支路将近结束的地方，人已经很稀少了。在支路的一端，矗立着一家小小的只有一开间的门面铺子。虽然门面狭小，却是三层楼房。门面上只挂着一块不起眼的牌子，上面写着合作社43号供应部。而这里的门牌号也是四十三号。
+　　
+　　门面上挂着遮阳的竹帘，从街道上望过去什么也看不到从接到孙尚香掀开竹帘，走了进去。
