@@ -1,8 +1,7 @@
 ---
 layout: post
-category : lessons
-tagline: "Supporting tagline"
-tags : [intro, beginner, jekyll, tutorial]
+title:第六卷 战争 第二百六十一节 孙尚香的实习
+category : 第六卷　战争
 ---
 
 {% include JB/setup %}
