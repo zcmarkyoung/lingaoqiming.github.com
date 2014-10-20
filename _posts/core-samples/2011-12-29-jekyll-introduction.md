@@ -1,12 +1,7 @@
----
-layout: post
-category : lessons
-tagline: "Supporting tagline"
-tags : [intro, beginner, jekyll, tutorial]
----
+
 {% include JB/setup %}
 
-## 第六卷 战争 第二百六十一节 孙尚香的实习
+# 第六卷 战争 第二百六十一节 孙尚香的实习
 
 
     “论及古文功底，我的确不够资格质疑你的古汉语水平，但是显然你也不懂法律。”姬信淡淡的说，“说实话，在查书之前，我真没想到代表反动地主阶级利益的《大明律》居然并非完全一边倒地袒护良民、歧视奴婢。相对于良民来说，奴婢是‘低一等的人’，而不是‘物品’，更不是一条狗，一匹马。
